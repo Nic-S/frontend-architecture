@@ -1,7 +1,10 @@
 {
   "en": {
     "translation": {
-      "helloWord": "Hello world"
+      "login": {
+        "title": "Welcome!",
+        "enter": "Login"
+      }
     }
   }
 }

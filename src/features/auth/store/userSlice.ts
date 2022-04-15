@@ -2,6 +2,7 @@ import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit';
 import { User } from '../model/user';
 import api from '../services/api';
 import { type AppThunk, type RootState } from '../../../core/store';
+import { setJwtToken } from '../../../core/services/webStorageService';
 
 interface UserSliceState {
   data: User | null;
@@ -36,6 +37,18 @@ export const { startFetch, finishFetch, fail } = userSlice.actions;
 export const fetchUser = (): AppThunk => async dispatch => {
   dispatch(startFetch());
   try {
+    const user = await api.getUser();
+    dispatch(finishFetch(user));
+  } catch (error) {
+    dispatch(fail(JSON.stringify(error)));
+  }
+};
+
+export const refreshTokenAndFetchUser = (): AppThunk => async dispatch => {
+  dispatch(startFetch());
+  try {
+    const response = await api.refreshToken();
+    setJwtToken(response.data.access_token);
     const user = await api.getUser();
     dispatch(finishFetch(user));
   } catch (error) {
