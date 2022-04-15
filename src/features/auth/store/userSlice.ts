@@ -34,6 +34,16 @@ export const userSlice = createSlice({
 
 export const { startFetch, finishFetch, fail } = userSlice.actions;
 
+export const loginAndFetchUser = (): AppThunk => async dispatch => {
+  dispatch(startFetch());
+  try {
+    await api.login();
+    dispatch(fetchUser());
+  } catch (error) {
+    dispatch(fail(JSON.stringify(error)));
+  }
+};
+
 export const fetchUser = (): AppThunk => async dispatch => {
   dispatch(startFetch());
   try {

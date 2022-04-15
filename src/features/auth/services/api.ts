@@ -5,9 +5,12 @@ import { UserResponse } from '../model/userResponse';
 import { setJwtToken } from '../../../core/services/webStorageService';
 
 const api = {
+  login: async (): Promise<void> => {
+    const response = await axios.post(paths.login());
+    setTokenAndTimeout(response.data.access_token);
+  },
   getUser: async (): Promise<User> => {
     const response = await axios.get<UserResponse>(paths.getUser());
-    setTokenAndTimeout(response.data.access_token);
     return toUser(response.data);
   },
   refreshToken: async (): Promise<AxiosResponse> => {

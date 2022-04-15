@@ -8,14 +8,14 @@ import CardContent from '@mui/material/CardContent';
 import { Box } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../core/store';
-import { fetchUser } from '../store/userSlice';
+import { loginAndFetchUser } from '../store/userSlice';
 
 export const Login = (): JSX.Element => {
   const { t } = useTranslation();
   const dispatch = useDispatch<AppDispatch>();
 
   const handleOnClick = useCallback(() => {
-    dispatch(fetchUser());
+    dispatch(loginAndFetchUser());
   }, [dispatch]);
 
   return (

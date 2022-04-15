@@ -9,7 +9,7 @@ export interface User {
 }
 
 export const toUser = (o: UserResponse): User => ({
-  name: o.name as string,
+  name: `${o.familyName} ${o.firstName}` as string,
   email: o.email as string,
   familyName: o.familyName as string,
   firstName: o.firstName as string,

@@ -11,6 +11,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import { setErrorInterceptor, setJwtInterceptor } from './core/interceptors';
 import { store } from './core/store';
 
+if (process.env.NODE_ENV === 'development') {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
+  const { worker } = require('./mocks/browser');
+  worker.start();
+}
+
 setJwtInterceptor();
 setErrorInterceptor();
 
