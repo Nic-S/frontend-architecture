@@ -7,7 +7,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 export const toastService = {
   success: (): React.ReactText =>
-    toast.success('Successfully done', { icon: <CheckCircleOutlineIcon />, autoClose: 200000 }),
+    toast.success('Successfully done', { icon: <CheckCircleOutlineIcon />, autoClose: 2000 }),
   warning: (msg: string | ReactNode, options?: ToastOptions): React.ReactText =>
     toast.warning(msg, { icon: <WarningAmberOutlinedIcon />, ...options }),
   error: (msg: string | ReactNode, options?: ToastOptions): React.ReactText =>
