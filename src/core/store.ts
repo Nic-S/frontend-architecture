@@ -1,8 +1,9 @@
 import { Action, AnyAction, combineReducers, configureStore, createAction, ThunkAction } from '@reduxjs/toolkit';
 import { deleteJwtToken } from './services/webStorageService';
+import userReducer from '../features/auth/store/userSlice';
 
 export const logoutAction = createAction<void>('LOGOUT');
-const combinedReducer = combineReducers({});
+const combinedReducer = combineReducers({ user: userReducer });
 
 const rootReducer = (state: RootState | undefined, action: AnyAction) => {
   if (action.type === 'LOGOUT') {
