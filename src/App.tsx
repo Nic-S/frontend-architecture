@@ -1,4 +1,5 @@
 import React from 'react';
+import './i18n';
 import logo from './logo.svg';
 import './App.css';
 
