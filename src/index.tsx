@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import { Provider } from 'react-redux';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { setErrorInterceptor, setJwtInterceptor } from './core/interceptors';
+import { store } from './core/store';
 
 setJwtInterceptor();
 setErrorInterceptor();
@@ -15,10 +17,12 @@ setErrorInterceptor();
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ToastContainer theme='colored' />
-      <App />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <ToastContainer theme='colored' />
+        <App />
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );
 
