@@ -13,9 +13,11 @@ export const Page: React.FC<PropsWithChildren<PageProps>> = (props): JSX.Element
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { children, title, backButton } = props;
   return (
-    <>
-      <Typography variant='h3'>{title}</Typography>
-      <Box css={style.container}>{children}</Box>
-    </>
+    <Box css={style.container}>
+      <Typography variant='h3' sx={{ paddingBottom: '12px' }}>
+        {title}
+      </Typography>
+      <Box sx={{ flexGrow: 1 }}>{children}</Box>
+    </Box>
   );
 };

@@ -7,6 +7,7 @@
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.6.1",
     "@mui/material": "^5.6.1",
+    "@mui/x-data-grid": "^5.9.0",
     "@reduxjs/toolkit": "^1.8.1",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.0.1",
@@ -28,6 +29,7 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "@faker-js/faker": "^6.1.2",
     "eslint-config-airbnb-typescript-prettier": "^5.0.0",
     "eslint-plugin-prettier": "^4.0.0",
     "msw": "^0.39.2",
