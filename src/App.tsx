@@ -7,6 +7,7 @@ import { Login } from './features/auth/pages/Login';
 import { refreshTokenAndFetchUser } from './features/auth/store/userSlice';
 import { AppDispatch } from './core/store';
 import { getJwtToken } from './core/services/webStorageService';
+import { PageUnderSecurity } from './shared/PageUnderSecurity';
 
 const App = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,8 +21,16 @@ const App = (): JSX.Element => {
 
   return (
     <Routes>
-      <Route path='/' element={<Navigate to='login' replace />} />
+      <Route path='/' element={<Navigate to='product' replace />} />
       <Route path='/login' element={<Login />} />
+      <Route
+        path='/product'
+        element={
+          <PageUnderSecurity title='Landing Page'>
+            <div>landing page</div>
+          </PageUnderSecurity>
+        }
+      />
     </Routes>
   );
 };
