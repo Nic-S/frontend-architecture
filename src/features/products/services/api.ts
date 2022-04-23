@@ -8,6 +8,9 @@ const api = {
     const response = await axios.get<ProductResponse[]>(paths.getProducts());
     return response.data.map(toProduct);
   },
+  changeDate: async (id: string, value: Date): Promise<void> => {
+    await axios.put<ProductResponse>(paths.changeDate(id), { value });
+  },
 };
 
 export default api;

@@ -1,4 +1,12 @@
-import { Action, AnyAction, combineReducers, configureStore, createAction, ThunkAction } from '@reduxjs/toolkit';
+import {
+  Action,
+  AnyAction,
+  combineReducers,
+  configureStore,
+  createAction,
+  ThunkAction,
+  ThunkDispatch,
+} from '@reduxjs/toolkit';
 import { deleteJwtToken } from './services/webStorageService';
 import userReducer from '../features/auth/store/userSlice';
 import productsReducer from '../features/products/store/productsSlice';
@@ -25,5 +33,6 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof combinedReducer>;
 
 export type AppDispatch = typeof store.dispatch;
+export type AppThunkDispatch = ThunkDispatch<RootState, unknown, Action<string>>;
 
-export type AppThunk = ThunkAction<void, RootState, unknown, Action>;
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action>;

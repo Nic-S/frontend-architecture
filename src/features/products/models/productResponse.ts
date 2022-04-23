@@ -3,5 +3,6 @@ export interface ProductResponse {
   color: string;
   department: string;
   price: string;
-  product: { type: string; adjective: string; description: string; material: string; name: string };
+  contractDate: string;
+  product: { type: string; adjective: string; description: string; material: string; name: string; date: string };
 }

@@ -1,10 +1,11 @@
 import { createSlice, Draft, PayloadAction } from '@reduxjs/toolkit';
+import formatISO from 'date-fns/formatISO';
 import api from '../services/api';
 import { DEFAULT_CACHE_TTL } from '../../../constants';
 import { type AppThunk, type RootState } from '../../../core/store';
 import { Product } from '../models/product';
 
-interface CardsSliceState {
+interface ProductsSliceState {
   data: Product[];
   isFetching: boolean;
   error: string;
@@ -19,14 +20,14 @@ const initialState = {
   isFetching: false,
   error: '',
   isValidCache: false,
-} as CardsSliceState;
+} as ProductsSliceState;
 
 export const productsSlice = createSlice({
   name: 'cards',
   initialState,
   reducers: {
-    startFetch: (state: Draft<CardsSliceState>) => ({ ...state, isFetching: true }),
-    finishFetch: (state: Draft<CardsSliceState>, payloadAction: PayloadAction<Product[]>) => {
+    startFetch: (state: Draft<ProductsSliceState>) => ({ ...state, isFetching: true }),
+    finishFetch: (state: Draft<ProductsSliceState>, payloadAction: PayloadAction<Product[]>) => {
       return {
         ...state,
         isFetching: false,
@@ -35,16 +36,33 @@ export const productsSlice = createSlice({
         error: '',
       };
     },
-    httpError: (state: Draft<CardsSliceState>, payloadAction: PayloadAction<string>) => ({
+    httpError: (state: Draft<ProductsSliceState>, payloadAction: PayloadAction<string>) => ({
       ...state,
       isFetching: false,
       error: payloadAction.payload,
     }),
-    invalidateCache: (state: Draft<CardsSliceState>) => ({ ...state, isValidCache: false }),
+    invalidateCache: (state: Draft<ProductsSliceState>) => ({ ...state, isValidCache: false }),
+    changeDate: (
+      state: Draft<ProductsSliceState>,
+      payloadAction: PayloadAction<{ value: Date; productId: string }>
+    ) => {
+      const { value, productId } = payloadAction.payload;
+      const products = [...state.data];
+      const existingItemIndex = products.findIndex((p: Product) => p.id === productId);
+      if (existingItemIndex > -1) {
+        const product = { ...products[existingItemIndex] };
+        product.productDate = formatISO(value, { representation: 'date' });
+        products[existingItemIndex] = product;
+      }
+      return {
+        ...state,
+        data: products,
+      };
+    },
   },
 });
 
-export const { startFetch, finishFetch, httpError, invalidateCache } = productsSlice.actions;
+export const { startFetch, finishFetch, httpError, invalidateCache, changeDate } = productsSlice.actions;
 
 export const fetchProducts = (): AppThunk => async (dispatch, state) => {
   if (!state().products.isValidCache) {
@@ -58,6 +76,28 @@ export const fetchProducts = (): AppThunk => async (dispatch, state) => {
     setTimeout(() => dispatch(invalidateCache()), DEFAULT_CACHE_TTL);
   }
 };
+
+export const changeProductDate =
+  (value: Date, productId: string): AppThunk =>
+  async (dispatch, state) => {
+    try {
+      await api.changeDate(productId, value); // if return new product set that or change date inside state
+      dispatch(changeDate({ value, productId }));
+    } catch (error) {
+      dispatch(httpError(JSON.stringify(error)));
+    }
+  };
+
+export const changeContractDate =
+  (value: Date, productId: string): AppThunk<Promise<void>> =>
+  async (dispatch, state) => {
+    try {
+      return api.changeDate(productId, value); // if return new product set that or change date inside state
+    } catch (error) {
+      dispatch(httpError(JSON.stringify(error)));
+      return Promise.reject();
+    }
+  };
 
 export const selectProducts = (state: RootState): Product[] => state.products.data;
 export const selectIsFetching = (state: RootState): boolean => state.products.isFetching;
