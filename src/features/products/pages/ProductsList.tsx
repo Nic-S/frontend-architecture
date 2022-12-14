@@ -5,11 +5,11 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Box, TextField } from '@mui/material';
 import { AppDispatch } from '../../../core/store';
 import {
-  changeContractDate,
-  changeProductDate,
-  fetchProducts,
-  selectIsFetching,
-  selectProducts,
+    changeContractDate,
+    changeProductDate,
+    fetchProducts,
+    selectIsFetching, selectIsIdle,
+    selectProducts,
 } from '../store/productsSlice';
 import { Product } from '../models/product';
 
@@ -17,6 +17,7 @@ export const ProductsList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const products = useSelector(selectProducts);
   const isFetching = useSelector(selectIsFetching);
+  const isIdle = useSelector(selectIsIdle);
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -145,14 +146,14 @@ export const ProductsList = () => {
           textDecoration: 'underline',
         },
       }}>
-      <DataGrid
+        {!isIdle &&<DataGrid
         rows={products}
         columns={columns}
         loading={isFetching}
         checkboxSelection
         disableSelectionOnClick
         experimentalFeatures={{ newEditingApi: true }}
-      />
+      />}
     </Box>
   );
 };

@@ -27,7 +27,7 @@ const App = (): JSX.Element => {
       <Route
         path='/product'
         element={
-          <PageUnderSecurity title='Landing Page'>
+          <PageUnderSecurity title='Products'>
             <ProductsList />
           </PageUnderSecurity>
         }

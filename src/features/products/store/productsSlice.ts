@@ -10,6 +10,7 @@ interface ProductsSliceState {
   isFetching: boolean;
   error: string;
   isValidCache: boolean;
+  isIdle: boolean
   // sort: SortField;
   // filter: FilterField;
   // pagination: Pagination;
@@ -20,13 +21,14 @@ const initialState = {
   isFetching: false,
   error: '',
   isValidCache: false,
+  isIdle: true
 } as ProductsSliceState;
 
 export const productsSlice = createSlice({
   name: 'cards',
   initialState,
   reducers: {
-    startFetch: (state: Draft<ProductsSliceState>) => ({ ...state, isFetching: true }),
+    startFetch: (state: Draft<ProductsSliceState>) => ({ ...state, isFetching: true, isIdle: false }),
     finishFetch: (state: Draft<ProductsSliceState>, payloadAction: PayloadAction<Product[]>) => {
       return {
         ...state,
@@ -66,12 +68,14 @@ export const { startFetch, finishFetch, httpError, invalidateCache, changeDate }
 
 export const fetchProducts = (): AppThunk => async (dispatch, state) => {
   if (!state().products.isValidCache) {
+    if(!state().products.isFetching) {
     await dispatch(startFetch());
-    try {
-      const products = await api.getProducts();
-      await dispatch(finishFetch(products));
-    } catch (error) {
-      dispatch(httpError(JSON.stringify(error)));
+      try {
+        const products = await api.getProducts();
+        await dispatch(finishFetch(products));
+      } catch (error) {
+        dispatch(httpError(JSON.stringify(error)));
+      }
     }
     setTimeout(() => dispatch(invalidateCache()), DEFAULT_CACHE_TTL);
   }
@@ -101,5 +105,6 @@ export const changeContractDate =
 
 export const selectProducts = (state: RootState): Product[] => state.products.data;
 export const selectIsFetching = (state: RootState): boolean => state.products.isFetching;
+export const selectIsIdle = (state: RootState): boolean => state.products.isIdle;
 
 export default productsSlice.reducer;

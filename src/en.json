@@ -4,6 +4,10 @@
       "login": {
         "title": "Welcome!",
         "enter": "Login"
+      },
+      "userMenu": {
+        "greeting": "Hi",
+        "logout": "Logout"
       }
     }
   }
