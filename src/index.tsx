@@ -11,7 +11,7 @@ import reportWebVitals from './reportWebVitals';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { setErrorInterceptor, setJwtInterceptor } from './core/interceptors';
-import { store } from './core/store';
+import { setupStore } from './core/store';
 
 if (process.env.NODE_ENV === 'development') {
   // eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
@@ -25,7 +25,7 @@ setErrorInterceptor();
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <Provider store={setupStore()}>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <BrowserRouter>
           <ToastContainer theme='colored' />

@@ -4,6 +4,7 @@ import {
   combineReducers,
   configureStore,
   createAction,
+  PreloadedState,
   ThunkAction,
   ThunkDispatch,
 } from '@reduxjs/toolkit';
@@ -23,16 +24,19 @@ const rootReducer = (state: RootState | undefined, action: AnyAction) => {
   return combinedReducer(state, action);
 };
 
-export const store = configureStore({
-  reducer: rootReducer,
-  middleware: getDefaultMiddleware => getDefaultMiddleware(),
-  devTools: process.env.NODE_ENV === 'development',
-});
+export const setupStore = (preloadedState?: PreloadedState<RootState>) =>
+  configureStore({
+    reducer: rootReducer,
+    middleware: getDefaultMiddleware => getDefaultMiddleware(),
+    devTools: process.env.NODE_ENV === 'development',
+    preloadedState,
+  });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof combinedReducer>;
 
-export type AppDispatch = typeof store.dispatch;
+export type AppDispatch = AppStore['dispatch'];
+export type AppStore = ReturnType<typeof setupStore>;
 export type AppThunkDispatch = ThunkDispatch<RootState, unknown, Action<string>>;
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action>;

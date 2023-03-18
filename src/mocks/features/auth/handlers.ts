@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { rest } from 'msw';
 import { API_URL } from '../../../constants';
 import { ROLES, UserResponse } from '../../../features/auth/model/userResponse';

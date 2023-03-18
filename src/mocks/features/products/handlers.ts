@@ -1,6 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { rest } from 'msw';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import faker from '@faker-js/faker';
 import formatISO from 'date-fns/formatISO';
 import { API_URL } from '../../../constants';
@@ -44,6 +42,34 @@ export const productsHandlers = [
 
     // If authenticated, return a mocked user details
     return res(ctx.status(200), ctx.json<ProductResponse[]>(response));
+  }),
+  rest.put(`${PRODUCTS_URL}/:id`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(req.body));
+  }),
+];
+
+export const productsTestHandlers = [
+  rest.get(`${PRODUCTS_URL}/`, (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json<ProductResponse[]>([
+        {
+          id: '123',
+          color: 'Red',
+          price: '1',
+          department: 'department',
+          contractDate: '10-10-2022T00:00Z',
+          product: {
+            adjective: 'adjective',
+            description: 'description',
+            material: 'material',
+            name: 'name',
+            type: 'type',
+            date: '11-11-2023T00:00Z',
+          },
+        },
+      ])
+    );
   }),
   rest.put(`${PRODUCTS_URL}/:id`, (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(req.body));
